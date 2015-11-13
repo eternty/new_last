@@ -138,4 +138,11 @@ class Rules_Attribute(models.Model):
         return self.value1.attribute_value + str(self.rule) + self.value2.attribute_value + u" = " + \
                self.result.attribute_value
 
-#class Question_Order
+class Question_Order(models.Model):
+    answer = models.ForeignKey(Answer, verbose_name=u'Выбранный ответ-условие')
+    next = models.ForeignKey(Question, verbose_name=u'Следующий вопрос')
+    not_ask = models.ForeignKey(Question, verbose_name=u'Не спрашивать')
+    class Meta:
+        db_table = "question_order"
+        verbose_name = u"Следующий вопрос"
+        verbose_name_plural = u"Следующие вопросы"
