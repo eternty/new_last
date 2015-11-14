@@ -4,5 +4,13 @@
     <data-source name="Django default" uuid="7666bed0-38ff-4bb3-b3ba-568e48bcdab7">
       <auth-required>false</auth-required>
     </data-source>
+    <data-source name="Sqlite (Xerial) - db.sqlite3" uuid="b621d5e8-e89c-4e0d-aba2-b33d057cff6d">
+      <secret-storage>master_key</secret-storage>
+      <auth-required>false</auth-required>
+    </data-source>
+    <data-source name="Sqlite (Xerial) - db.sqlite3 [2]" uuid="5419153d-7f75-4966-b042-f7e00d06862d">
+      <secret-storage>master_key</secret-storage>
+      <auth-required>false</auth-required>
+    </data-source>
   </component>
 </project>
