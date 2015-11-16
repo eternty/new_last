@@ -24,5 +24,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index),
-    url(r'^views.questions')
+    url(r'^answer/?$', views.answer, name="answer"),
+    url(r'^final/?$', views.final, name="final"),
+    url(r'^question.html',views.question, name = "question")
 ]

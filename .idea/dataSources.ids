@@ -4,6 +4,56 @@
     <database-info product="SQLite" version="3.8.9" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native"/>
     <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
     <schema name="" catalog=""/>
+    <table name="answer" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="body" sqlType="TEXT" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="question_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_answer_1" columns="question_id" ref-table="question" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_attribute_answer_2" table="attribute_answer" schema="" catalog="" columns="answer_id"/>
+      <exported-key name="#FAKE_question_order_3" table="question_order" schema="" catalog="" columns="answer_id"/>
+      <exported-key name="#FAKE_question_order_3" table="question_order" schema="" catalog="" columns="answer_id"/>
+      <index name="answer_7aa0f6ee" unique="true" columns="question_id"/>
+    </table>
+    <table name="attribute" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="VARCHAR(60)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="main" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="defines_attribute_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_attribute_1" columns="defines_attribute_id" ref-table="attribute" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_attribute_1" table="attribute" schema="" catalog="" columns="defines_attribute_id"/>
+      <exported-key name="#FAKE_attribute_value_1" table="attribute_value" schema="" catalog="" columns="attribute_id"/>
+      <index name="attribute_327932e4" unique="true" columns="defines_attribute_id"/>
+    </table>
+    <table name="attribute_answer" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="answer_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="attribute_value_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_attribute_answer_1" columns="attribute_value_id" ref-table="attribute_value" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_attribute_answer_2" columns="answer_id" ref-table="answer" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="attribute_answer_1a48053f" unique="true" columns="attribute_value_id"/>
+      <index name="attribute_answer_fb12e902" unique="true" columns="answer_id"/>
+    </table>
+    <table name="attribute_value" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="value" sqlType="VARCHAR(50)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="selected" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="attribute_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_attribute_value_1" columns="attribute_id" ref-table="attribute" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_attribute_answer_1" table="attribute_answer" schema="" catalog="" columns="attribute_value_id"/>
+      <exported-key name="#FAKE_objects_attributes_1" table="objects_attributes" schema="" catalog="" columns="value_id"/>
+      <exported-key name="#FAKE_rules_attr_1" table="rules_attr" schema="" catalog="" columns="value2_id"/>
+      <exported-key name="#FAKE_rules_attr_2" table="rules_attr" schema="" catalog="" columns="value1_id"/>
+      <exported-key name="#FAKE_rules_attr_3" table="rules_attr" schema="" catalog="" columns="result_id"/>
+      <exported-key name="#FAKE_objects_attributes_1" table="objects_attributes" schema="" catalog="" columns="value_id"/>
+      <exported-key name="#FAKE_rules_attr_1" table="rules_attr" schema="" catalog="" columns="value2_id"/>
+      <exported-key name="#FAKE_rules_attr_2" table="rules_attr" schema="" catalog="" columns="value1_id"/>
+      <exported-key name="#FAKE_rules_attr_3" table="rules_attr" schema="" catalog="" columns="result_id"/>
+      <index name="attribute_value_e582ed73" unique="true" columns="attribute_id"/>
+    </table>
     <table name="auth_group" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="name" sqlType="VARCHAR(80)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
@@ -119,6 +169,61 @@
       <column name="expire_date" sqlType="DATETIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <primary-key columns="session_key"/>
       <index name="django_session_de54fa62" unique="true" columns="expire_date"/>
+    </table>
+    <table name="object" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="name" sqlType="TEXT" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_objects_attributes_2" table="objects_attributes" schema="" catalog="" columns="sys_object_id"/>
+      <exported-key name="#FAKE_objects_attributes_2" table="objects_attributes" schema="" catalog="" columns="sys_object_id"/>
+    </table>
+    <table name="objects_attributes" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="sys_object_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="value_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_objects_attributes_1" columns="value_id" ref-table="attribute_value" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_objects_attributes_2" columns="sys_object_id" ref-table="object" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="objects_attributes_b0304493" unique="true" columns="value_id"/>
+      <index name="objects_attributes_f75dd7da" unique="true" columns="sys_object_id"/>
+    </table>
+    <table name="question" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="text" sqlType="VARCHAR(250)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
+      <column name="type" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <exported-key name="#FAKE_answer_1" table="answer" schema="" catalog="" columns="question_id"/>
+      <exported-key name="#FAKE_question_order_1" table="question_order" schema="" catalog="" columns="not_ask_id"/>
+      <exported-key name="#FAKE_question_order_2" table="question_order" schema="" catalog="" columns="next_id"/>
+      <exported-key name="#FAKE_question_order_1" table="question_order" schema="" catalog="" columns="not_ask_id"/>
+      <exported-key name="#FAKE_question_order_2" table="question_order" schema="" catalog="" columns="next_id"/>
+    </table>
+    <table name="question_order" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="answer_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="next_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="not_ask_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_question_order_1" columns="not_ask_id" ref-table="question" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_question_order_2" columns="next_id" ref-table="question" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_question_order_3" columns="answer_id" ref-table="answer" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="question_order_20cc489f" unique="true" columns="not_ask_id"/>
+      <index name="question_order_ca644eb8" unique="true" columns="next_id"/>
+      <index name="question_order_fb12e902" unique="true" columns="answer_id"/>
+    </table>
+    <table name="rules_attr" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="rule" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="result_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="value1_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="value2_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_rules_attr_1" columns="value2_id" ref-table="attribute_value" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_rules_attr_2" columns="value1_id" ref-table="attribute_value" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_rules_attr_3" columns="result_id" ref-table="attribute_value" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <index name="rules_attr_be490b5b" unique="true" columns="value2_id"/>
+      <index name="rules_attr_e7a31c37" unique="true" columns="value1_id"/>
+      <index name="rules_attr_57f06544" unique="true" columns="result_id"/>
     </table>
     <table name="sqlite_sequence" schema="" catalog="" type="TABLE">
       <column name="name" sqlType="" precision="0" scale="-1" nullable="true" jdbcType="12"/>

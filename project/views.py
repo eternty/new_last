@@ -1,4 +1,5 @@
 from django.shortcuts import render
+
 from project.models import Question, QuestionOrder, Answer, SystemObject,AttributeValue, Attribute, \
     AttributeAnswer,RulesAttribute
 # Create your views here.
@@ -15,29 +16,30 @@ def index(request):
 
 def init_session(request):
     session = {
+        "counter": 0,
         "asked_questions": [],
         "chosed_answers": [],
         "applied_rules": [],
     }
     request.session = session
 
-def update_sessions(request,inc_questions = False,finished=False, write_results=False, results = "" ):
-    if inc_questions:
-        request.session['history']['questions'] += 1
-    if write_results:
-        request.session['history']['results'] = results
-    if finished:
-def questions(request):
-    session = request.session
-    answers = []
-    if session.
-    questions = Question.objects.get(all()),
+def question(request):
+    init_session(request)
+    counter = request.session.get('counter')
+    question = Question.objects.filter(id=counter)
+    answers = Answer.objects.filter(question = question)
     context = {
-
-
+        'question': question,
+        'answers': answers,
+        'counter': counter
     }
-    if request.method == 'GET':
 
-    elif request.method == 'POST':
+    return render(request, 'question.html', context)
+
+def answer(request):
+    request.session.counter = request.session.get('counter')+1
+
+def final(request):
+    return 1
 
 
