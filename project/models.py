@@ -3,53 +3,34 @@ from django.utils import timezone
 from django.contrib.auth.models import User, AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
+from django.utils.translation import ugettext_lazy as _
 # Create your models here.
-'''class MyUserManager(BaseUserManager):
-
-    def _create_user(self, username, email, password,
-                     is_staff, is_superuser, **extra_fields):
-        """
-        Creates and saves a User with the given username, email and password.
-        """
-        now = timezone.now()
-        email = self.normalize_email(email)
-        user = self.model(username=username, email=email,
-                          is_staff=is_staff, is_active=True,
-                          is_superuser=is_superuser, last_login=now,
-                          date_joined=now, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_user(self, username, email, password=None, **extra_fields):
-        return self._create_user(username, email, password, False, False,
-                                 **extra_fields)
-
-    def create_superuser(self, username, email, password, **extra_fields):
-        return self._create_user(username, email, password,
-                                 True, True, **extra_fields)'''
-
 class Attribute(models.Model):
     name = models.CharField(max_length = 60, verbose_name= u'Название')
     main = models.BooleanField(default=False, verbose_name=u'Атрибут')
-    defines_attribute = models.ForeignKey("self", verbose_name=u'Определяет_атрибут')
+    defines_attribute = models.ForeignKey("self", verbose_name=u'Определяет_атрибут', blank=True, null=True)
     class Meta:
         db_table = "attribute"
         verbose_name = u"Атрибут"
         verbose_name_plural = u"Атрибуты"
-
-    '''def __unicode__(self):
-        return self.name'''
+    def get_defines_attribute(self):
+        return self.defines_attribute.name
+    def __unicode__(self):
+        return self.name
 
 class AttributeValue(models.Model):
     attribute = models.ForeignKey(Attribute,on_delete=models.CASCADE, verbose_name = u'Атрибут')
     value = models.CharField(max_length=50, verbose_name=u'Значение')
-    selected = models.BooleanField(default=False)
+    ifselected = models.BooleanField(default=False)
     class Meta:
         db_table = "attribute_value"
         verbose_name = u"Значение атрибута"
         verbose_name_plural = u"Значения атрибутов"
-
+    def get_attribute(self):
+        return self.attribute.name
+    def __unicode__(self):
+        return self.value
     '''def __unicode__(self):
         return str(self.id) + ". " + self.attribute.name + " : " + str(self.value)'''
 
@@ -64,8 +45,8 @@ class SystemObject(models.Model):
         verbose_name = u"Объект"
         verbose_name_plural = u"Объекты"
 
-    '''def __unicode__(self):
-        return self.name'''
+    def __unicode__(self):
+        return self.name
 
 class ObjectsAttribute(models.Model):
     sys_object = models.ForeignKey(SystemObject)
@@ -74,8 +55,12 @@ class ObjectsAttribute(models.Model):
         db_table = "objects_attributes"
         verbose_name = u"Атрибут объекта"
         verbose_name_plural = u"Атрибуты объектов"
+    def get_sys_object(self):
+        return self.sys_object.name
 
 class Question(models.Model):
+    def __unicode__(self):
+        return self.text
     SELECT = 0
     NUMBER = 1
     CHOICES = (
@@ -91,6 +76,9 @@ class Question(models.Model):
         verbose_name = u"Вопрос"
         verbose_name_plural = u"Вопросы"
 
+    def get_question(self):
+        return self.text
+
     '''def __unicode__(self):
         return u"Вопрос № " + str(self.id) + self.text      #perhaps I should use unicode(self.id)'''
 
@@ -103,23 +91,31 @@ class Answer(models.Model):
         db_table = "answer"
         verbose_name = u"Ответ"
         verbose_name_plural = u"Ответы"
-
+    def get_question(self):
+        return self.question.text
+    def get_answer(self):
+        return self.body
+    def __unicode__(self):
+        return self.body
     '''def __unicode__(self):
-        return u"Ответ №" + str(self.id) + u" на вопрос №" + str(self.question.id)'''
+        return u("Ответ №" + str(self.id) + " на вопрос №" + str(self.question.id))'''
 
 class AttributeAnswer(models.Model):
     answer = models.ForeignKey(Answer, verbose_name=u'Ответ')
     attribute_value = models.ForeignKey(AttributeValue, verbose_name=u'Значение атрибута')
-
+    def get_value(self):
+        return self.attribute_value.value
+    def get_answer(self):
+        return self.answer.body
     class Meta:
         db_table = "attribute_answer"
         verbose_name = u"Ответ-атрибут"
         verbose_name_plural = u"Ответы и атрибуты"
 
-    '''def __unicode__(self):
+    def __unicode__(self):
         return u"Ответ #" + self.answer.body + u" # на вопрос #" + self.answer.question.text +\
                u"определяет значение атрибута " + self.attribute_value.attribute.name + u" как "\
-               + self.attribute_value.value'''
+               + self.attribute_value.value
 
 class RulesAttribute(models.Model):
     and_rule = 0
@@ -132,7 +128,12 @@ class RulesAttribute(models.Model):
     value2 = models.ForeignKey(AttributeValue, verbose_name=u'Условие 2', related_name=u'value2')
     result = models.ForeignKey(AttributeValue, verbose_name=u'Результат', related_name=u'result')
     rule = models.IntegerField(choices=CHOICES, verbose_name=u'Операция')
-
+    def get_value1(self):
+        return self.value1.value
+    def get_value2(self):
+        return self.value2.value
+    def get_result(self):
+        return self.result.value
     class Meta:
         db_table = "rules_attr"
         verbose_name = u"Правило атрибутов"
@@ -150,3 +151,12 @@ class QuestionOrder(models.Model):
         db_table = "question_order"
         verbose_name = u"Следующий вопрос"
         verbose_name_plural = u"Следующие вопросы"
+    def get_answer(self):
+        return self.answer.body
+    def get_next(self):
+        return self.next.text
+    def get_not_ask(self):
+        return self.not_ask.text
+
+
+
