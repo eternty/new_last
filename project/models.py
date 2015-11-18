@@ -16,7 +16,7 @@ class Attribute(models.Model):
         verbose_name_plural = u"Атрибуты"
     def get_defines_attribute(self):
         return self.defines_attribute.name
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class AttributeValue(models.Model):
@@ -29,7 +29,7 @@ class AttributeValue(models.Model):
         verbose_name_plural = u"Значения атрибутов"
     def get_attribute(self):
         return self.attribute.name
-    def __unicode__(self):
+    def __str__(self):
         return self.value
     '''def __unicode__(self):
         return str(self.id) + ". " + self.attribute.name + " : " + str(self.value)'''
@@ -45,7 +45,7 @@ class SystemObject(models.Model):
         verbose_name = u"Объект"
         verbose_name_plural = u"Объекты"
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class ObjectsAttribute(models.Model):
@@ -59,7 +59,7 @@ class ObjectsAttribute(models.Model):
         return self.sys_object.name
 
 class Question(models.Model):
-    def __unicode__(self):
+    def __str__(self):
         return self.text
     SELECT = 0
     NUMBER = 1
@@ -70,7 +70,7 @@ class Question(models.Model):
     )
     text = models.CharField(verbose_name=u'Teкст', max_length=250)
     type = models.IntegerField(choices=CHOICES, verbose_name=u'Тип')
-
+    if_first = models.BooleanField(default=False)
     class Meta:
         db_table = "question"
         verbose_name = u"Вопрос"
@@ -95,7 +95,7 @@ class Answer(models.Model):
         return self.question.text
     def get_answer(self):
         return self.body
-    def __unicode__(self):
+    def __str__(self):
         return self.body
     '''def __unicode__(self):
         return u("Ответ №" + str(self.id) + " на вопрос №" + str(self.question.id))'''
@@ -112,7 +112,7 @@ class AttributeAnswer(models.Model):
         verbose_name = u"Ответ-атрибут"
         verbose_name_plural = u"Ответы и атрибуты"
 
-    def __unicode__(self):
+    def __str__(self):
         return u"Ответ #" + self.answer.body + u" # на вопрос #" + self.answer.question.text +\
                u"определяет значение атрибута " + self.attribute_value.attribute.name + u" как "\
                + self.attribute_value.value
@@ -134,6 +134,7 @@ class RulesAttribute(models.Model):
         return self.value2.value
     def get_result(self):
         return self.result.value
+
     class Meta:
         db_table = "rules_attr"
         verbose_name = u"Правило атрибутов"
@@ -146,7 +147,7 @@ class RulesAttribute(models.Model):
 class QuestionOrder(models.Model):
     answer = models.ForeignKey(Answer, verbose_name=u'Выбранный ответ-условие')
     next = models.ForeignKey(Question, verbose_name=u'Следующий вопрос', related_name=u'next')
-    not_ask = models.ForeignKey(Question, verbose_name=u'Не спрашивать', related_name=u'not_ask')
+    not_ask = models.ForeignKey(Question, verbose_name=u'Не спрашивать', related_name=u'not_ask', blank=True, null=True)
     class Meta:
         db_table = "question_order"
         verbose_name = u"Следующий вопрос"

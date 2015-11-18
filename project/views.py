@@ -1,7 +1,8 @@
 from django.shortcuts import render
+from project.models import Question, QuestionOrder, Answer, SystemObject, AttributeValue, Attribute, \
+    AttributeAnswer, RulesAttribute
 
-from project.models import Question, QuestionOrder, Answer, SystemObject,AttributeValue, Attribute, \
-    AttributeAnswer,RulesAttribute
+
 # Create your views here.
 def index(request):
     session = request.session
@@ -14,6 +15,7 @@ def index(request):
 
     return render(request, 'index.html', args)
 
+
 def init_session(request):
     session = {
         "counter": 0,
@@ -23,23 +25,38 @@ def init_session(request):
     }
     request.session = session
 
+
 def question(request):
     init_session(request)
     counter = request.session.get('counter')
-    question = Question.objects.filter(id=counter)
-    answers = Answer.objects.filter(question = question)
+    first_questions = Question.objects.filter(if_first=True)
+    ordered = first_questions.order_by("id")
+    question = ordered[0]
+
+    answers = Answer.objects.filter(question=question)
     context = {
         'question': question,
         'answers': answers,
         'counter': counter
     }
-
+    request.session['asked_questions'].append(question)
     return render(request, 'question.html', context)
 
+
 def answer(request):
-    request.session.counter = request.session.get('counter')+1
+    got_answer = request.POST.get("answer")
+    '''request.session["chosed_answers"].append(got_answer)'''
+    question_answer = QuestionOrder.objects.get(answer_id=got_answer)
+    question = question_answer.next
+    answers = Answer.objects.filter(question=question)
+    '''counter = request.session["counter"] + 1'''
+    context = {
+        'question': question,
+        'answers': answers,
+       # 'counter': counter
+    }
+    return render(request, 'question.html', context)
+
 
 def final(request):
     return 1
-
-
