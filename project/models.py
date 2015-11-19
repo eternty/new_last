@@ -96,7 +96,7 @@ class Answer(models.Model):
     def get_answer(self):
         return self.body
     def __str__(self):
-        return self.body
+        return self.question.text + self.body
     '''def __unicode__(self):
         return u("Ответ №" + str(self.id) + " на вопрос №" + str(self.question.id))'''
 
@@ -158,6 +158,7 @@ class QuestionOrder(models.Model):
         return self.next.text
     def get_not_ask(self):
         return self.not_ask.text
+
 
 
 

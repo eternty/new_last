@@ -48,6 +48,7 @@ def answer(request):
     '''request.session["chosed_answers"].append(got_answer)'''
     question_answer = QuestionOrder.objects.get(answer_id=got_answer)
     question = question_answer.next
+
     answers = Answer.objects.filter(question=question)
     '''counter = request.session["counter"] + 1'''
     context = {
