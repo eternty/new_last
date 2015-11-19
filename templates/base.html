@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ЭС</title>
+    <meta charset="utf-8">
+    {% block title %}
+        <title>АС СПЭС</title>
+    {% endblock %}
+    {% load staticfiles %}
+
+    <link rel="stylesheet" type="text/css" href="{% static "css/lib/bootstrap.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/lib/toastr.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/index.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/buttons.css"%}">
+</head>
+<body>
+    <div class="col-md-12">
+        {% block content%}
+        {% endblock %}
+    </div>
+    <script src="{% static "js/lib/jquery.min.js" %}"></script>
+	<script  src="{% static "js/lib/bootstrap.min.js" %}"></script>
+	<script  src="{% static "js/lib/underscore-min.js" %}"></script>
+    <script  src="{% static "js/lib/toastr.min.js" %}"></script>
+    <script  src="{% static "js/django_ajax.js" %}"></script>
+    {% block scripts %}
+    {% endblock %}
+</body>
+
+</html>
