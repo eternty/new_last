@@ -48,16 +48,18 @@ def answer(request):
     '''request.session["chosed_answers"].append(got_answer)'''
     question_answer = QuestionOrder.objects.get(answer_id=got_answer)
     question = question_answer.next
-
+    if question.text=='end':
+        return render(request, 'final.html')
     answers = Answer.objects.filter(question=question)
     '''counter = request.session["counter"] + 1'''
     context = {
-        'question': question,
-        'answers': answers,
+            'question': question,
+            'answers': answers,
        # 'counter': counter
-    }
+            }
     return render(request, 'question.html', context)
 
 
 def final(request):
-    return 1
+
+    return render(request, 'final.html')
