@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 class Attribute(models.Model):
     name = models.CharField(max_length = 60, verbose_name= u'Название')
     main = models.BooleanField(default=False, verbose_name=u'Атрибут')
+    like_object = models.BooleanField(default=False, verbose_name=u'Подсчет совпадений')
     defines_attribute = models.ForeignKey("self", verbose_name=u'Определяет_атрибут', blank=True, null=True)
     class Meta:
         db_table = "attribute"

@@ -18,8 +18,6 @@ def index(request):
 
 def init_session(request):
     session = {
-        "counter": 0,
-        "asked_questions": [],
         "chosed_answers": [],
         "applied_rules": [],
     }
@@ -39,14 +37,17 @@ def question(request):
         'answers': answers,
         'counter': counter
     }
-    request.session['asked_questions'].append(question)
+    #request.session['asked_questions'].append(question)
     return render(request, 'question.html', context)
 
+def defining_attributes(request,answer):
+    request.session
 
 def answer(request):
     got_answer = request.POST.get("answer")
     '''request.session["chosed_answers"].append(got_answer)'''
-    question_answer = QuestionOrder.objects.get(answer_id=got_answer)
+    question_answer = QuestionOrder.objects.get(answer=got_answer)
+    #answer_attribute = AttributeAnswer.objects.filter(answer_id=got_answer)
     question = question_answer.next
     if question.text=='end':
         return render(request, 'final.html')
@@ -55,10 +56,9 @@ def answer(request):
     context = {
             'question': question,
             'answers': answers,
-       # 'counter': counter
+       #    'counter': counter
             }
     return render(request, 'question.html', context)
-
 
 def final(request):
 
