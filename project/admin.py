@@ -3,7 +3,7 @@ from django.contrib import admin
 from django import forms
 from .models import *
 class AttributeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'main', 'defines_attribute')
+    list_display = ('id', 'name', 'main', 'defines_attribute', 'like_object')
 
 class AttributeValueAdmin(admin.ModelAdmin):
     list_display = ('id', 'attribute', 'value', 'ifselected')
