@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'^answer/?$', views.answer, name="answer"),
     url(r'^question.html',views.question, name = "question"),
-    url(r'^result/?&',views.result, name = "result")
+    #url(r'^result/?$',views.result, name = "result"),
+    url(r'^final/?$',views.final, name = "final"),
 ]

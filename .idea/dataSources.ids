@@ -12,10 +12,6 @@
       <foreign-key name="#FAKE_answer_1" columns="question_id" ref-table="question" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <exported-key name="#FAKE_attribute_answer_2" table="attribute_answer" schema="" catalog="" columns="answer_id"/>
       <exported-key name="#FAKE_question_order_3" table="question_order" schema="" catalog="" columns="answer_id"/>
-      <exported-key name="#FAKE_attribute_answer_2" table="attribute_answer" schema="" catalog="" columns="answer_id"/>
-      <exported-key name="#FAKE_question_order_3" table="question_order" schema="" catalog="" columns="answer_id"/>
-      <exported-key name="#FAKE_attribute_answer_2" table="attribute_answer" schema="" catalog="" columns="answer_id"/>
-      <exported-key name="#FAKE_question_order_3" table="question_order" schema="" catalog="" columns="answer_id"/>
       <index name="answer_7aa0f6ee" unique="true" columns="question_id"/>
     </table>
     <table name="attribute" schema="" catalog="" type="TABLE">
@@ -26,10 +22,6 @@
       <column name="like_object" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_attribute_1" columns="defines_attribute_id" ref-table="attribute" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
-      <exported-key name="#FAKE_attribute_1" table="attribute" schema="" catalog="" columns="defines_attribute_id"/>
-      <exported-key name="#FAKE_attribute_value_1" table="attribute_value" schema="" catalog="" columns="attribute_id"/>
-      <exported-key name="#FAKE_attribute_1" table="attribute" schema="" catalog="" columns="defines_attribute_id"/>
-      <exported-key name="#FAKE_attribute_value_1" table="attribute_value" schema="" catalog="" columns="attribute_id"/>
       <exported-key name="#FAKE_attribute_1" table="attribute" schema="" catalog="" columns="defines_attribute_id"/>
       <exported-key name="#FAKE_attribute_value_1" table="attribute_value" schema="" catalog="" columns="attribute_id"/>
       <index name="attribute_327932e4" unique="true" columns="defines_attribute_id"/>
@@ -56,26 +48,12 @@
       <exported-key name="#FAKE_rules_attr_1" table="rules_attr" schema="" catalog="" columns="value2_id"/>
       <exported-key name="#FAKE_rules_attr_2" table="rules_attr" schema="" catalog="" columns="value1_id"/>
       <exported-key name="#FAKE_rules_attr_3" table="rules_attr" schema="" catalog="" columns="result_id"/>
-      <exported-key name="#FAKE_attribute_answer_1" table="attribute_answer" schema="" catalog="" columns="attribute_value_id"/>
-      <exported-key name="#FAKE_objects_attributes_1" table="objects_attributes" schema="" catalog="" columns="value_id"/>
-      <exported-key name="#FAKE_rules_attr_1" table="rules_attr" schema="" catalog="" columns="value2_id"/>
-      <exported-key name="#FAKE_rules_attr_2" table="rules_attr" schema="" catalog="" columns="value1_id"/>
-      <exported-key name="#FAKE_rules_attr_3" table="rules_attr" schema="" catalog="" columns="result_id"/>
-      <exported-key name="#FAKE_attribute_answer_1" table="attribute_answer" schema="" catalog="" columns="attribute_value_id"/>
-      <exported-key name="#FAKE_objects_attributes_1" table="objects_attributes" schema="" catalog="" columns="value_id"/>
-      <exported-key name="#FAKE_rules_attr_1" table="rules_attr" schema="" catalog="" columns="value2_id"/>
-      <exported-key name="#FAKE_rules_attr_2" table="rules_attr" schema="" catalog="" columns="value1_id"/>
-      <exported-key name="#FAKE_rules_attr_3" table="rules_attr" schema="" catalog="" columns="result_id"/>
       <index name="attribute_value_e582ed73" unique="true" columns="attribute_id"/>
     </table>
     <table name="auth_group" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="name" sqlType="VARCHAR(80)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
-      <exported-key name="#FAKE_auth_group_permissions_2" table="auth_group_permissions" schema="" catalog="" columns="group_id"/>
-      <exported-key name="#FAKE_auth_user_groups_1" table="auth_user_groups" schema="" catalog="" columns="group_id"/>
-      <exported-key name="#FAKE_auth_group_permissions_2" table="auth_group_permissions" schema="" catalog="" columns="group_id"/>
-      <exported-key name="#FAKE_auth_user_groups_1" table="auth_user_groups" schema="" catalog="" columns="group_id"/>
       <exported-key name="#FAKE_auth_group_permissions_2" table="auth_group_permissions" schema="" catalog="" columns="group_id"/>
       <exported-key name="#FAKE_auth_user_groups_1" table="auth_user_groups" schema="" catalog="" columns="group_id"/>
     </table>
@@ -99,10 +77,6 @@
       <foreign-key name="#FAKE_auth_permission_1" columns="content_type_id" ref-table="django_content_type" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <exported-key name="#FAKE_auth_group_permissions_1" table="auth_group_permissions" schema="" catalog="" columns="permission_id"/>
       <exported-key name="#FAKE_auth_user_user_permissions_1" table="auth_user_user_permissions" schema="" catalog="" columns="permission_id"/>
-      <exported-key name="#FAKE_auth_group_permissions_1" table="auth_group_permissions" schema="" catalog="" columns="permission_id"/>
-      <exported-key name="#FAKE_auth_user_user_permissions_1" table="auth_user_user_permissions" schema="" catalog="" columns="permission_id"/>
-      <exported-key name="#FAKE_auth_group_permissions_1" table="auth_group_permissions" schema="" catalog="" columns="permission_id"/>
-      <exported-key name="#FAKE_auth_user_user_permissions_1" table="auth_user_user_permissions" schema="" catalog="" columns="permission_id"/>
       <index name="auth_permission_417f1b1c" unique="true" columns="content_type_id"/>
       <index name="auth_permission_content_type_id_01ab375a_uniq" unique="true" columns="content_type_id,codename"/>
     </table>
@@ -119,12 +93,6 @@
       <column name="date_joined" sqlType="DATETIME" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <column name="username" sqlType="VARCHAR(30)" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
-      <exported-key name="#FAKE_auth_user_groups_2" table="auth_user_groups" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_auth_user_user_permissions_2" table="auth_user_user_permissions" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_django_admin_log_1" table="django_admin_log" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_auth_user_groups_2" table="auth_user_groups" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_auth_user_user_permissions_2" table="auth_user_user_permissions" schema="" catalog="" columns="user_id"/>
-      <exported-key name="#FAKE_django_admin_log_1" table="django_admin_log" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_auth_user_groups_2" table="auth_user_groups" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_auth_user_user_permissions_2" table="auth_user_user_permissions" schema="" catalog="" columns="user_id"/>
       <exported-key name="#FAKE_django_admin_log_1" table="django_admin_log" schema="" catalog="" columns="user_id"/>
@@ -173,10 +141,6 @@
       <primary-key columns="id"/>
       <exported-key name="#FAKE_auth_permission_1" table="auth_permission" schema="" catalog="" columns="content_type_id"/>
       <exported-key name="#FAKE_django_admin_log_2" table="django_admin_log" schema="" catalog="" columns="content_type_id"/>
-      <exported-key name="#FAKE_auth_permission_1" table="auth_permission" schema="" catalog="" columns="content_type_id"/>
-      <exported-key name="#FAKE_django_admin_log_2" table="django_admin_log" schema="" catalog="" columns="content_type_id"/>
-      <exported-key name="#FAKE_auth_permission_1" table="auth_permission" schema="" catalog="" columns="content_type_id"/>
-      <exported-key name="#FAKE_django_admin_log_2" table="django_admin_log" schema="" catalog="" columns="content_type_id"/>
       <index name="django_content_type_app_label_76bd3d3b_uniq" unique="true" columns="app_label,model"/>
     </table>
     <table name="django_migrations" schema="" catalog="" type="TABLE">
@@ -198,8 +162,6 @@
       <column name="name" sqlType="TEXT" precision="0" scale="-1" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
       <exported-key name="#FAKE_objects_attributes_2" table="objects_attributes" schema="" catalog="" columns="sys_object_id"/>
-      <exported-key name="#FAKE_objects_attributes_2" table="objects_attributes" schema="" catalog="" columns="sys_object_id"/>
-      <exported-key name="#FAKE_objects_attributes_2" table="objects_attributes" schema="" catalog="" columns="sys_object_id"/>
     </table>
     <table name="objects_attributes" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
@@ -217,13 +179,6 @@
       <column name="type" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="if_first" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <primary-key columns="id"/>
-      <exported-key name="#FAKE_answer_1" table="answer" schema="" catalog="" columns="question_id"/>
-      <exported-key name="#FAKE_question_order_1" table="question_order" schema="" catalog="" columns="not_ask_id"/>
-      <exported-key name="#FAKE_question_order_2" table="question_order" schema="" catalog="" columns="next_id"/>
-      <exported-key name="#FAKE_answer_1" table="answer" schema="" catalog="" columns="question_id"/>
-      <exported-key name="#FAKE_question_order_1" table="question_order" schema="" catalog="" columns="not_ask_id"/>
-      <exported-key name="#FAKE_question_order_2" table="question_order" schema="" catalog="" columns="next_id"/>
-      <exported-key name="#FAKE_answer_1" table="answer" schema="" catalog="" columns="question_id"/>
       <exported-key name="#FAKE_answer_1" table="answer" schema="" catalog="" columns="question_id"/>
       <exported-key name="#FAKE_question_order_1" table="question_order" schema="" catalog="" columns="not_ask_id"/>
       <exported-key name="#FAKE_question_order_2" table="question_order" schema="" catalog="" columns="next_id"/>
@@ -246,7 +201,7 @@
       <column name="rule" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="result_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="value1_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
-      <column name="value2_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="value2_id" sqlType="INTEGER" precision="0" scale="-1" nullable="true" jdbcType="4"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_rules_attr_1" columns="value2_id" ref-table="attribute_value" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <foreign-key name="#FAKE_rules_attr_2" columns="value1_id" ref-table="attribute_value" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
