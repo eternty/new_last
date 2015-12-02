@@ -128,7 +128,7 @@ class RulesAttribute(models.Model):
     value1 = models.ForeignKey(AttributeValue, verbose_name=u'Условие 1', related_name=u'value1')
     value2 = models.ForeignKey(AttributeValue, verbose_name=u'Условие 2', related_name=u'value2',null=True, blank=True, default=None)
     result = models.ForeignKey(AttributeValue, verbose_name=u'Результат', related_name=u'result')
-    rule = models.IntegerField(choices=CHOICES, verbose_name=u'Операция')
+    rule = models.IntegerField(choices=CHOICES, verbose_name=u'Операция', blank=True, null=True)
     def get_value1(self):
         return self.value1.value
     def get_value2(self):

@@ -126,7 +126,7 @@ def defining_attributes():
 
 #def defining_():
 
-'''def result(request):
+def result(request):
     global choice
     for chosed_answer in chosed_answers:
         selected_attributes = AttributeAnswer.objects.filter(answer=chosed_answer)
@@ -158,9 +158,9 @@ def defining_attributes():
                 chosed_attributes.append(result_choices[0])
     context = {
          'chosed_answers': chosed_answers,
-         #'chosed_attributes': chosed_attributes
+         'chosed_attributes': chosed_attributes
     }
-    return render('result.html', context)'''
+    return render(request,'result.html', context)
 
 def final(request):
 
