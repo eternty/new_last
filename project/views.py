@@ -134,25 +134,41 @@ def result(request):
             chosed_attributes.append(sel_attr.attribute_value)
     #then we should find out attributes from other attributes
     rules_attributes = RulesAttribute.objects.all()
-    attributes_tocount=[]
+    attributes_tocount=[]     # these are values of attributes, which are matter for define the attribute like object
+    counting_attributes = [] # attributes, which has a set of defifnitions, example: dosha
     #rules_attributes.order_by(id)
     for rule in rules_attributes:
         if rule.and_rule:                 #and_rule - all the conditons must be achieved
             if rule.value1 in chosed_attributes:
                 if rule.value2 in chosed_attributes:
                     chosed_attributes.append(rule.result)
+                    chosed_attributes.remove(rule.value1)
+                    chosed_attributes.remove(rule.value2)
         if rule.or_rule:
             if rule.value1 in chosed_attributes:
                 chosed_attributes.append(rule.result)
+                chosed_attributes.remove(rule.value1)
+                rules_attributes.exclude(result=rule.result)
+                #chosed_attributes.remove(rule.value2)
             if rule.value2 in chosed_attributes:
                 chosed_attributes.append(rule.result)
+                #chosed_attributes.remove(rule.value1)
+                chosed_attributes.remove(rule.value2)
+                rules_attributes.exclude(result=rule.result)
         if rule.rule == '':
             if rule.value1 in chosed_attributes:
                 if rule.result.attribute.like_object == True:
                     attributes_tocount.append(rule.result)        #we add here all attrib_values into special list
                 else:
                     chosed_attributes.append(rule.result)
-    attributes_tocount.sort()     #we have to count includings and choose the large one
+
+    for attr_to_count in  attributes_tocount:   #we have to count includings and choose the large one
+        attr_to_count.count = attr_to_count.count + 1
+        if attr_to_count.attribute not in counting_attributes:
+            counting_attributes.append(attr_to_count.attribute)   # we save attributes, which are defining by count of appearings
+    for counting_attribute in counting_attributes:  # now all those attributes, who are waiting to be defined
+        set_of_attributes = AttributeValue.filter(attribute= counting_attribute).order_by('-count')
+        chosed_attributes.append(set_of_attributes[0])
 
    #add the count of doshas
 

@@ -24,6 +24,7 @@ class AttributeValue(models.Model):
     attribute = models.ForeignKey(Attribute,on_delete=models.CASCADE, verbose_name = u'Атрибут')
     value = models.CharField(max_length=50, verbose_name=u'Значение')
     ifselected = models.BooleanField(default=False)
+    count = models.IntegerField(default=0, verbose_name=u'Счетчик_попаданий')
     class Meta:
         db_table = "attribute_value"
         verbose_name = u"Значение атрибута"
@@ -40,7 +41,7 @@ class SystemObject(models.Model):
     attributes = models.ManyToManyField(AttributeValue, through='ObjectsAttribute',
                                          through_fields=('sys_object','value'),
                                          blank=True, verbose_name=u'Атрибуты')
-
+    count = models.IntegerField(verbose_name=u'Счетчик_попаданий', default=0)
     class Meta:
         db_table = "object"
         verbose_name = u"Объект"
