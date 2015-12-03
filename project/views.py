@@ -45,7 +45,7 @@ def answer(request):
     chosed_answers.append(chosed_answer)
     question = question_answer.next
     if question.text=='end':
-        return render(request, 'result.html')
+        return render(request, 'final.html')
     answers = Answer.objects.filter(question=question)
     '''counter = request.session["counter"] + 1'''
     context = {
@@ -128,34 +128,35 @@ def defining_attributes():
 
 def result(request):
     global choice
-    for chosed_answer in chosed_answers:
+    for chosed_answer in chosed_answers:              #here we get attributes from answers!
         selected_attributes = AttributeAnswer.objects.filter(answer=chosed_answer)
         for sel_attr in selected_attributes:
             chosed_attributes.append(sel_attr.attribute_value)
     #then we should find out attributes from other attributes
     rules_attributes = RulesAttribute.objects.all()
+    attributes_tocount=[]
     #rules_attributes.order_by(id)
     for rule in rules_attributes:
-        if rule.value1 in chosed_attributes:
-            if rule.value2 in chosed_attributes:
-                if rule.result.attribute == rule.value1.attribute:
-                    chosed_attributes.remove(rule.value1)
-                if rule.result.attribute == rule.value2.attribute:
-                    chosed_attributes.remove(rule.value2)
+        if rule.and_rule:                 #and_rule - all the conditons must be achieved
+            if rule.value1 in chosed_attributes:
+                if rule.value2 in chosed_attributes:
+                    chosed_attributes.append(rule.result)
+        if rule.or_rule:
+            if rule.value1 in chosed_attributes:
                 chosed_attributes.append(rule.result)
-            if rule.value2 == None:
-                aim_attribute = Attribute.objects.get(attribute=rule.result.attribute)    #define aim attr
-                choices = AttributeValue.objects.filter(attribute=aim_attribute)          #select its attrib_values
-                result_choices = []
-                for choice in choices:
-                    result_choices.append([choice])
-                    match_rules = RulesAttribute.objects.filter(result=choice)
-                    for match_rule in match_rules:
-                        if match_rule.value1 in chosed_attributes:
-                            result_choices[choice].append(match_rule.value1)
-                            rules_attributes.exclude(match_rule)
-                result_choices.sort([choice].__len__())
-                chosed_attributes.append(result_choices[0])
+            if rule.value2 in chosed_attributes:
+                chosed_attributes.append(rule.result)
+        if rule.rule == '':
+            if rule.value1 in chosed_attributes:
+                if rule.result.attribute.like_object == True:
+                    attributes_tocount.append(rule.result)        #we add here all attrib_values into special list
+                else:
+                    chosed_attributes.append(rule.result)
+    attributes_tocount.sort()     #we have to count includings and choose the large one
+
+   #add the count of doshas
+
+
     context = {
          'chosed_answers': chosed_answers,
          'chosed_attributes': chosed_attributes

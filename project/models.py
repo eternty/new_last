@@ -135,7 +135,8 @@ class RulesAttribute(models.Model):
         return self.value2.value
     def get_result(self):
         return self.result.value
-
+    def get_rule(self):
+        return self.rule
     class Meta:
         db_table = "rules_attr"
         verbose_name = u"Правило атрибутов"
