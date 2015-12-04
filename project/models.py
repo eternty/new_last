@@ -122,6 +122,7 @@ class AttributeAnswer(models.Model):
 class RulesAttribute(models.Model):
     and_rule = 0
     or_rule = 1
+
     CHOICES = (
         (and_rule, "И"),
         (or_rule, "ИЛИ"),

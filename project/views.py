@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from project.models import Question, QuestionOrder, Answer, SystemObject, AttributeValue, Attribute, \
     AttributeAnswer, RulesAttribute
+from django.db.models import Count
 import json
 
 # Create your views here.
@@ -136,46 +137,65 @@ def result(request):
     rules_attributes = RulesAttribute.objects.all()
     attributes_tocount=[]     # these are values of attributes, which are matter for define the attribute like object
     counting_attributes = [] # attributes, which has a set of defifnitions, example: dosha
-    #rules_attributes.order_by(id)
     for rule in rules_attributes:
-        if rule.and_rule:                 #and_rule - all the conditons must be achieved
+        if rule.rule==0:                 #and_rule - all the conditons must be achieved
             if rule.value1 in chosed_attributes:
                 if rule.value2 in chosed_attributes:
                     chosed_attributes.append(rule.result)
                     chosed_attributes.remove(rule.value1)
                     chosed_attributes.remove(rule.value2)
-        if rule.or_rule:
+        if rule.rule==1:
             if rule.value1 in chosed_attributes:
                 chosed_attributes.append(rule.result)
                 chosed_attributes.remove(rule.value1)
                 rules_attributes.exclude(result=rule.result)
-                #chosed_attributes.remove(rule.value2)
+                if rule.value1 in chosed_attributes:
+                    chosed_attributes.remove(rule.value2)
+
             if rule.value2 in chosed_attributes:
                 chosed_attributes.append(rule.result)
-                #chosed_attributes.remove(rule.value1)
+                if rule.value1 in chosed_attributes:
+                    chosed_attributes.remove(rule.value1)
                 chosed_attributes.remove(rule.value2)
                 rules_attributes.exclude(result=rule.result)
-        if rule.rule == '':
+        else:
             if rule.value1 in chosed_attributes:
                 if rule.result.attribute.like_object == True:
                     attributes_tocount.append(rule.result)        #we add here all attrib_values into special list
                 else:
                     chosed_attributes.append(rule.result)
 
-    for attr_to_count in  attributes_tocount:   #we have to count includings and choose the large one
+    aim_attributes = Attribute.objects.filter(like_object=True)
+    for aim_attribute in aim_attributes:
+        aim_variants = AttributeValue.objects.filter(attribute = aim_attribute)
+        for aim_variant in aim_variants:
+            for attrib_tocount in attributes_tocount:
+                if aim_variant.value==attrib_tocount.value:
+                    aim_variant.count = aim_variant.count +1
+        aim_variants.order_by('-count').reverse()
+
+        chosed_attributes.append(aim_variants[0])
+
+    '''for attr_to_count in  attributes_tocount:   #we have to count includings and choose the large one
+        aim_attribute = Attribute.objects.get(attribute=attr_to_count.attribute)
+        aim_variants = AttributeValue.objects.filter(attribute = aim_attribute)
+
         attr_to_count.count = attr_to_count.count + 1
         if attr_to_count.attribute not in counting_attributes:
             counting_attributes.append(attr_to_count.attribute)   # we save attributes, which are defining by count of appearings
+
     for counting_attribute in counting_attributes:  # now all those attributes, who are waiting to be defined
-        set_of_attributes = AttributeValue.filter(attribute= counting_attribute).order_by('-count')
+        set_of_attributes = AttributeValue.objects.filter(attribute= counting_attribute).order_by('count').reverse()
         chosed_attributes.append(set_of_attributes[0])
+        '''
 
    #add the count of doshas
 
-
     context = {
          'chosed_answers': chosed_answers,
-         'chosed_attributes': chosed_attributes
+         'chosed_attributes': chosed_attributes,
+         'attributes_tocount':attributes_tocount,
+
     }
     return render(request,'result.html', context)
 
