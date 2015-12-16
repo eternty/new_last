@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from project.models import Question, QuestionOrder, Answer, SystemObject, AttributeValue, Attribute, \
-    AttributeAnswer, RulesAttribute
+    AttributeAnswer, RulesAttribute, ObjectsAttribute
 from django.db.models import Count
 import json
 
@@ -165,38 +165,36 @@ def result(request):
                 else:
                     chosed_attributes.append(rule.result)
 
+
+
     aim_attributes = Attribute.objects.filter(like_object=True)
+
     for aim_attribute in aim_attributes:
         aim_variants = AttributeValue.objects.filter(attribute = aim_attribute)
+              #we add all variants as keys
+        final_variant = aim_variants[0]
         for aim_variant in aim_variants:
-            for attrib_tocount in attributes_tocount:
-                if aim_variant.value==attrib_tocount.value:
-                    aim_variant.count = aim_variant.count +1
-        aim_variants.order_by('-count').reverse()
+            if attributes_tocount.count(aim_variant)>attributes_tocount.count(final_variant):
+                final_variant = aim_variant
+        chosed_attributes.append(final_variant)
 
-        chosed_attributes.append(aim_variants[0])
+    all_objects = SystemObject.objects.all()
+    for one_object in all_objects:
+        his_attributes = ObjectsAttribute.objects.filter(sys_object=one_object)
+        for one_his_attr in his_attributes:
+            if chosed_attributes.__contains__(one_his_attr):
+                one_object.count=one_object.count+1
+    all_objects.order_by('-count')
 
-    '''for attr_to_count in  attributes_tocount:   #we have to count includings and choose the large one
-        aim_attribute = Attribute.objects.get(attribute=attr_to_count.attribute)
-        aim_variants = AttributeValue.objects.filter(attribute = aim_attribute)
-
-        attr_to_count.count = attr_to_count.count + 1
-        if attr_to_count.attribute not in counting_attributes:
-            counting_attributes.append(attr_to_count.attribute)   # we save attributes, which are defining by count of appearings
-
-    for counting_attribute in counting_attributes:  # now all those attributes, who are waiting to be defined
-        set_of_attributes = AttributeValue.objects.filter(attribute= counting_attribute).order_by('count').reverse()
-        chosed_attributes.append(set_of_attributes[0])
-        '''
-
-   #add the count of doshas
 
     context = {
          'chosed_answers': chosed_answers,
          'chosed_attributes': chosed_attributes,
-         'attributes_tocount':attributes_tocount,
+         'attributes_tocount': attributes_tocount,
+         'chosed_object': all_objects[0]
 
     }
+
     return render(request,'result.html', context)
 
 def final(request):

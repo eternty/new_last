@@ -32,9 +32,8 @@ class AttributeValue(models.Model):
     def get_attribute(self):
         return self.attribute.name
     def __str__(self):
-        return self.value
-    '''def __unicode__(self):
-        return str(self.id) + ". " + self.attribute.name + " : " + str(self.value)'''
+        return self.attribute.name + ": "+ self.value
+
 
 class SystemObject(models.Model):
     name = models.TextField(verbose_name=u'Название')
@@ -61,8 +60,8 @@ class ObjectsAttribute(models.Model):
         return self.sys_object.name
 
 class Question(models.Model):
-    def __str__(self):
-        return self.text
+    def __unicode__(self):
+        return self.id
     SELECT = 0
     NUMBER = 1
     CHOICES = (

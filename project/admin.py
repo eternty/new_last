@@ -11,8 +11,11 @@ class AttributeValueAdmin(admin.ModelAdmin):
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('id', 'text', 'type','if_first')
 
+class SystemObjectForm(forms.ModelForm):
+    attributes = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
+                                                queryset=AttributeValue.objects.filter(attribute__main=True))
 class SystemObjectAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    form = SystemObjectForm
 
 class ObjectsAttributeAdmin(admin.ModelAdmin):
     list_display = ('id', 'sys_object', 'value')
