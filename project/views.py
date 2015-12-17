@@ -179,21 +179,28 @@ def result(request):
         chosed_attributes.append(final_variant)
 
     all_objects = SystemObject.objects.all()
-    for one_object in all_objects:
-        his_attributes = ObjectsAttribute.objects.filter(sys_object=one_object)
-        for one_his_attr in his_attributes:
-            if chosed_attributes.__contains__(one_his_attr):
-                one_object.count=one_object.count+1
-    all_objects.order_by('-count')
 
+    for one_object in all_objects:
+        his_attr_container = ObjectsAttribute.objects.filter(sys_object=one_object)
+        his_attr_count = 0
+        for one_containing in his_attr_container:
+            if one_containing.value in chosed_attributes:
+                his_attr_count += 1
+        one_object.count = his_attr_count
+
+    final_object = all_objects[0]
+    for object1 in all_objects:
+        if object1.count>final_object.count:
+            final_object = object1
 
     context = {
          'chosed_answers': chosed_answers,
          'chosed_attributes': chosed_attributes,
          'attributes_tocount': attributes_tocount,
-         'chosed_object': all_objects[0]
-
+         'all_objects': all_objects,
+         'final_object': final_object
     }
+
 
     return render(request,'result.html', context)
 
