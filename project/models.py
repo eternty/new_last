@@ -52,8 +52,9 @@ class SystemObject(models.Model):
 class ObjectsAttribute(models.Model):
     sys_object = models.ForeignKey(SystemObject)
     value = models.ForeignKey(AttributeValue)
+    probability = models.FloatField(default=0)
     class Meta:
-        auto_created=True  #this causes migrations issues(they dont apply!, but it is needed to add many attrib for object when creating the object!
+        #auto_created=True  #this causes migrations issues(they dont apply!, but it is needed to add many attrib for object when creating the object!
         db_table = "objects_attributes"
         verbose_name = u"Атрибут объекта"
         verbose_name_plural = u"Атрибуты объектов"

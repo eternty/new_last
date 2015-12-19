@@ -18,7 +18,7 @@ class SystemObjectAdmin(admin.ModelAdmin):
     form = SystemObjectForm
 
 class ObjectsAttributeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'sys_object', 'value')
+    list_display = ('id', 'sys_object', 'value', 'probability')
 
 class AnswerAdmin(admin.ModelAdmin):
     list_display = ('id', 'question', 'body')

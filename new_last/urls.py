@@ -28,4 +28,5 @@ urlpatterns = [
     url(r'^question.html',views.question, name = "question"),
     url(r'^result.html',views.result, name = "result"),
     url(r'^final/?$',views.final, name = "final"),
+    url(r'^vera.html/?$', views.vera, name = "vera")
 ]
