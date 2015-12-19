@@ -315,4 +315,113 @@ def vera(request):
 
     return render(request,'result.html', context)
 
+def vera_i_razum(request):
+    global choice
+    main_attributes = []
+    for chosed_answer in chosed_answers:              #here we get attributes from answers!
+        selected_attributes = AttributeAnswer.objects.filter(answer=chosed_answer)
+        for sel_attr in selected_attributes:
+            chosed_attributes.append(sel_attr.attribute_value)
+            if sel_attr.attribute_value.attribute.main==True:
+                main_attributes.append(sel_attr.attribute_value)
+    #then we should find out attributes from other attributes
+    rules_attributes = RulesAttribute.objects.all()
+    attributes_tocount=[]     # these are values of attributes, which are matter for define the attribute like object
+    #counting_attributes = [] # attributes, which has a set of defifnitions, example: dosha
+    for rule in rules_attributes:
+        if rule.rule==0:                 #and_rule - all the conditons must be achieved
+            if rule.value1 in chosed_attributes:
+                if rule.value2 in chosed_attributes:
+                    chosed_attributes.append(rule.result)
+                    if rule.result.attribute.main:
+                        main_attributes.append(rule.result)
+                    chosed_attributes.remove(rule.value1)
+                    chosed_attributes.remove(rule.value2)
+        if rule.rule==1:
+            if rule.value1 in chosed_attributes:
+                chosed_attributes.append(rule.result)
+                if rule.result.attribute.main:
+                        main_attributes.append(rule.result)
+                chosed_attributes.remove(rule.value1)
+                rules_attributes.exclude(result=rule.result)
+                if rule.value1 in chosed_attributes:
+                    chosed_attributes.remove(rule.value2)
+
+            if rule.value2 in chosed_attributes:
+                chosed_attributes.append(rule.result)
+                if rule.result.attribute.main:
+                        main_attributes.append(rule.result)
+                if rule.value1 in chosed_attributes:
+                    chosed_attributes.remove(rule.value1)
+                chosed_attributes.remove(rule.value2)
+                rules_attributes.exclude(result=rule.result)
+        else:
+            if rule.value1 in chosed_attributes:
+                if rule.result.attribute.like_object:
+                    attributes_tocount.append(rule.result)        #we add here all attrib_values into special list
+                else:
+                    chosed_attributes.append(rule.result)
+                    if rule.result.attribute.main:
+                        main_attributes.append(rule.result)
+
+
+
+
+    all_objects = SystemObject.objects.all()
+    amount = all_objects.count()
+    for one_object in all_objects:           #this is apriori probability!
+        one_object.count = 1/amount
+
+    '''aim_attributes = Attribute.objects.filter(like_object=True)
+    for aim_attribute in aim_attributes:
+        aim_variants = AttributeValue.objects.filter(attribute = aim_attribute)
+        for attrib_tocount in attributes_tocount:
+            if aim_attribute==attrib_tocount.:
+
+        for aim_variant in aim_variants:
+            aim_variant.measure
+
+
+            if attributes_tocount.count(aim_variant)>attributes_tocount.count(final_variant):
+                final_variant = aim_variant    '''
+
+
+    attr_lines = ObjectsAttribute.objects.all()
+    for main_attribut in main_attributes:            #at first we check, whether chosed_attribute means smth to us!
+        for attr_line in attr_lines:
+            if main_attribut == attr_line.value:
+                for main_attribute in main_attributes:     # for every chosed_attribute we will count the probability
+                    znamen = 0                                 # we count znamenatel` for Bayes` formula
+                    current_att_lines = ObjectsAttribute.objects.filter(value=main_attribute)   # we take all lines in the table, lines related to the chosed_atr
+
+                    for one_object in all_objects:            # it is for znamenatel`
+                        curr_probability = 0
+                        for att_line in current_att_lines:   # here we get probability to one_object and chosed_attribute, if it exists! otherway we have 0!
+                            if one_object == att_line.sys_object:
+                                curr_probability = att_line.probability
+                                znamen += one_object.count*curr_probability
+
+                    for object1 in all_objects:
+                        curr_probability = 0
+                        for attrib_line in current_att_lines:   # here we get probability to one_object and chosed_attribute, if it exists! otherway we have 0!
+                            if object1 == attrib_line.sys_object:
+                                curr_probability = attrib_line.probability
+                        chislit = curr_probability * object1.count
+                        object1.count += chislit/znamen
+
+    final_object = all_objects[0]
+    for one_object in all_objects:
+        if one_object.count > final_object.count:
+            final_object = one_object
+
+    context = {
+         'chosed_answers': chosed_answers,
+         'chosed_attributes': chosed_attributes,
+         'attributes_tocount': attributes_tocount,
+         'all_objects': all_objects,
+         'final_object': final_object
+    }
+
+
+    return render(request,'result.html', context)
 

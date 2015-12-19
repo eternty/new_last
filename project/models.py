@@ -25,6 +25,7 @@ class AttributeValue(models.Model):
     value = models.CharField(max_length=50, verbose_name=u'Значение')
     ifselected = models.BooleanField(default=False)
     count = models.IntegerField(default=0, verbose_name=u'Счетчик_попаданий')
+    measure = models.FloatField(default=0)
     class Meta:
         db_table = "attribute_value"
         verbose_name = u"Значение атрибута"
