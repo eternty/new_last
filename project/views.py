@@ -297,12 +297,17 @@ def vera(request):
                             if object1 == attrib_line.sys_object:
                                 curr_probability = attrib_line.probability
                         chislit = curr_probability * object1.count
-                        object1.count += chislit/znamen
+                        object1.count += (chislit/znamen)
 
     final_object = all_objects[0]
-    for one_object in all_objects:
-        if one_object.count > final_object.count:
-            final_object = one_object
+    for onen_object in all_objects:
+        if onen_object.count > final_object.count:
+            final_object = onen_object
+
+    for one_object2 in all_objects:           #normalization
+        if one_object2!=final_object:
+            one_object2.count /= final_object.count
+    final_object.count = 1
 
     context = {
          'chosed_answers': chosed_answers,
@@ -365,26 +370,46 @@ def vera_i_razum(request):
                         main_attributes.append(rule.result)
 
 
-
-
     all_objects = SystemObject.objects.all()
     amount = all_objects.count()
-    for one_object in all_objects:           #this is apriori probability!
+    for one_object in all_objects:                                   #this is apriori probability!
         one_object.count = 1/amount
 
-    '''aim_attributes = Attribute.objects.filter(like_object=True)
-    for aim_attribute in aim_attributes:
-        aim_variants = AttributeValue.objects.filter(attribute = aim_attribute)
-        for attrib_tocount in attributes_tocount:
-            if aim_attribute==attrib_tocount.:
+    #unclear logic for attributes like object!
 
-        for aim_variant in aim_variants:
-            aim_variant.measure
+    aim_attributes = Attribute.objects.filter(like_object=True)      # here we change measure of attributes like object!
+    for aim_attribute in aim_attributes:                     #ex Dosha!
+        amount_in_count = 0
+        for count1 in attributes_tocount:
+            if count1.attribute == aim_attribute:          # how much doshas value are matter
+                amount_in_count += 1
+        aim_variants = AttributeValue.objects.filter(attribute=aim_attribute)       #let`s see for every attrib/value
+        probabil_tochange_lines = ObjectsAttribute.objects.filter(value__attribute=aim_attribute) #all lines for the attribute, not to exact attr_value!
+
+        for aim_variant1 in aim_variants:
+            var_amount = attributes_tocount.count(aim_variant1)
+            aim_variant1.measure = var_amount/amount_in_count            #we know the measure of attr/value
+
+            znamenat = 0
+            for one_object23 in all_objects:            # it is for znamenatel`
+                curr_probability1 = 0
+                for attrib1_line in probabil_tochange_lines:   # here we get probability to one_object and chosed_attribute, if it exists! otherway we have 0!
+                    if attrib1_line.value == aim_variant1:
+                        if one_object23 == attrib1_line.sys_object:
+                            curr_probability1 = attrib1_line.probability * aim_variant1.measure
+                            znamenat += one_object23.count*curr_probability1
+
+            for object17 in all_objects:
+                curr_probability2 = 0
+                for attrib12_line in probabil_tochange_lines:   # here we get probability to one_object and chosed_attribute, if it exists! otherway we have 0!
+                    if attrib12_line.value == aim_variant1:
+                        if object17 == attrib12_line.sys_object:
+                            curr_probability2 = attrib12_line.probability * aim_variant1.measure
+                chislit1 = curr_probability2 * object17.count
+                object17.count += (chislit1/znamenat)
 
 
-            if attributes_tocount.count(aim_variant)>attributes_tocount.count(final_variant):
-                final_variant = aim_variant    '''
-
+    # this is for main_attributes
 
     attr_lines = ObjectsAttribute.objects.all()
     for main_attribut in main_attributes:            #at first we check, whether chosed_attribute means smth to us!
@@ -394,25 +419,30 @@ def vera_i_razum(request):
                     znamen = 0                                 # we count znamenatel` for Bayes` formula
                     current_att_lines = ObjectsAttribute.objects.filter(value=main_attribute)   # we take all lines in the table, lines related to the chosed_atr
 
-                    for one_object in all_objects:            # it is for znamenatel`
+                    for one_object32 in all_objects:            # it is for znamenatel`
                         curr_probability = 0
                         for att_line in current_att_lines:   # here we get probability to one_object and chosed_attribute, if it exists! otherway we have 0!
-                            if one_object == att_line.sys_object:
+                            if one_object32 == att_line.sys_object:
                                 curr_probability = att_line.probability
-                                znamen += one_object.count*curr_probability
+                                znamen += one_object32.count*curr_probability
 
-                    for object1 in all_objects:
+                    for object18 in all_objects:
                         curr_probability = 0
                         for attrib_line in current_att_lines:   # here we get probability to one_object and chosed_attribute, if it exists! otherway we have 0!
-                            if object1 == attrib_line.sys_object:
+                            if object18 == attrib_line.sys_object:
                                 curr_probability = attrib_line.probability
-                        chislit = curr_probability * object1.count
-                        object1.count += chislit/znamen
+                        chislit = curr_probability * object18.count
+                        object18.count += (chislit/znamen)
 
     final_object = all_objects[0]
-    for one_object in all_objects:
-        if one_object.count > final_object.count:
-            final_object = one_object
+    for onen_object in all_objects:
+        if onen_object.count > final_object.count:
+            final_object = onen_object
+
+    for one_object2 in all_objects:           #normalization
+        if one_object2!=final_object:
+            one_object2.count /= final_object.count
+    final_object.count = 1
 
     context = {
          'chosed_answers': chosed_answers,

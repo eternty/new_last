@@ -46,6 +46,7 @@
       <column name="ifselected" sqlType="BOOL" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="attribute_id" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
       <column name="count" sqlType="INTEGER" precision="0" scale="-1" nullable="false" jdbcType="4"/>
+      <column name="measure" sqlType="REAL" precision="0" scale="-1" nullable="false" jdbcType="6"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_attribute_value_1" columns="attribute_id" ref-table="attribute" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <exported-key name="#FAKE_attribute_answer_1" table="attribute_answer" schema="" catalog="" columns="attribute_value_id"/>
