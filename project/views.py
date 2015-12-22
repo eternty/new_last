@@ -290,24 +290,24 @@ def vera(request):
                             if one_object == att_line.sys_object:
                                 curr_probability = att_line.probability
                                 znamen += one_object.count*curr_probability
-
-                    for object1 in all_objects:
-                        curr_probability = 0
-                        for attrib_line in current_att_lines:   # here we get probability to one_object and chosed_attribute, if it exists! otherway we have 0!
-                            if object1 == attrib_line.sys_object:
-                                curr_probability = attrib_line.probability
-                        chislit = curr_probability * object1.count
-                        object1.count += (chislit/znamen)
+                    if znamen > 0:
+                        for object1 in all_objects:
+                            curr_probability = 0
+                            for attrib_line in current_att_lines:   # here we get probability to one_object and chosed_attribute, if it exists! otherway we have 0!
+                                if object1 == attrib_line.sys_object:
+                                    curr_probability = attrib_line.probability
+                            chislit = curr_probability * object1.count
+                            object1.count = (chislit/znamen)
 
     final_object = all_objects[0]
     for onen_object in all_objects:
         if onen_object.count > final_object.count:
             final_object = onen_object
 
-    for one_object2 in all_objects:           #normalization
+    '''for one_object2 in all_objects:           #normalization
         if one_object2!=final_object:
             one_object2.count /= final_object.count
-    final_object.count = 1
+    final_object.count = 1'''
 
     context = {
          'chosed_answers': chosed_answers,
@@ -398,15 +398,15 @@ def vera_i_razum(request):
                         if one_object23 == attrib1_line.sys_object:
                             curr_probability1 = attrib1_line.probability * aim_variant1.measure
                             znamenat += one_object23.count*curr_probability1
-
-            for object17 in all_objects:
-                curr_probability2 = 0
-                for attrib12_line in probabil_tochange_lines:   # here we get probability to one_object and chosed_attribute, if it exists! otherway we have 0!
-                    if attrib12_line.value == aim_variant1:
-                        if object17 == attrib12_line.sys_object:
-                            curr_probability2 = attrib12_line.probability * aim_variant1.measure
-                chislit1 = curr_probability2 * object17.count
-                object17.count += (chislit1/znamenat)
+            if znamenat>0:
+                for object17 in all_objects:
+                    curr_probability2 = 0
+                    for attrib12_line in probabil_tochange_lines:   # here we get probability to one_object and chosed_attribute, if it exists! otherway we have 0!
+                        if attrib12_line.value == aim_variant1:
+                            if object17 == attrib12_line.sys_object:
+                                curr_probability2 = attrib12_line.probability * aim_variant1.measure
+                    chislit1 = curr_probability2 * object17.count
+                    object17.count = (chislit1/znamenat)
 
 
     # this is for main_attributes
@@ -425,24 +425,24 @@ def vera_i_razum(request):
                             if one_object32 == att_line.sys_object:
                                 curr_probability = att_line.probability
                                 znamen += one_object32.count*curr_probability
-
-                    for object18 in all_objects:
-                        curr_probability = 0
-                        for attrib_line in current_att_lines:   # here we get probability to one_object and chosed_attribute, if it exists! otherway we have 0!
-                            if object18 == attrib_line.sys_object:
-                                curr_probability = attrib_line.probability
-                        chislit = curr_probability * object18.count
-                        object18.count += (chislit/znamen)
+                    if znamen>0:
+                        for object18 in all_objects:
+                            curr_probability = 0
+                            for attrib_line in current_att_lines:   # here we get probability to one_object and chosed_attribute, if it exists! otherway we have 0!
+                                if object18 == attrib_line.sys_object:
+                                    curr_probability = attrib_line.probability
+                            chislit = curr_probability * object18.count
+                            object18.count = (chislit/znamen)
 
     final_object = all_objects[0]
     for onen_object in all_objects:
         if onen_object.count > final_object.count:
             final_object = onen_object
 
-    for one_object2 in all_objects:           #normalization
+    '''for one_object2 in all_objects:           #normalization
         if one_object2!=final_object:
             one_object2.count /= final_object.count
-    final_object.count = 1
+    final_object.count = 1'''
 
     context = {
          'chosed_answers': chosed_answers,

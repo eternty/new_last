@@ -6,7 +6,7 @@ class AttributeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'main', 'defines_attribute', 'like_object')
 
 class AttributeValueAdmin(admin.ModelAdmin):
-    list_display = ('id', 'attribute', 'value', 'ifselected')
+    list_display = ('id', 'attribute', 'value', 'ifselected', 'measure')
 
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('id', 'text', 'type','if_first')
